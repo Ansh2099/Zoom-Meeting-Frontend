@@ -8,7 +8,15 @@ function websdkready() {
   if (testTool.isMobileDevice()) {
     const vConsole = new VConsole();
   }
-  const authEndpoint = "http://127.0.0.1:4000";
+  // Backend configuration - you can switch between local and deployed backends
+  const BACKEND_CONFIG = {
+    local: "http://127.0.0.1:4000",
+    deployed: "https://zoom-backend-0cpg.onrender.com"
+  };
+  
+  // Default to deployed backend, but you can change this to 'local' for development
+  const currentBackend = 'deployed';
+  const authEndpoint = BACKEND_CONFIG[currentBackend];
 
   //https://developers.zoom.us/docs/meeting-sdk/auth/#signature
   async function getSignature(meetingNumber, role) {

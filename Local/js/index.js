@@ -1,6 +1,14 @@
 import { ZoomMtg } from "@zoom/meetingsdk";
 
-const authEndpoint = "http://127.0.0.1:4000";
+// Backend configuration - you can switch between local and deployed backends
+const BACKEND_CONFIG = {
+  local: "http://127.0.0.1:4000",
+  deployed: "https://zoom-backend-0cpg.onrender.com"
+};
+
+// Default to local backend for development, but you can change this to 'deployed'
+const currentBackend = 'local';
+const authEndpoint = BACKEND_CONFIG[currentBackend];
 
 //https://developers.zoom.us/docs/meeting-sdk/auth/#signature
 async function getSignature(meetingNumber, role) {
