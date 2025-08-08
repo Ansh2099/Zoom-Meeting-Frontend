@@ -1,0 +1,42 @@
+{
+  "name": "zoom-meeting-frontend",
+  "version": "1.0.0",
+  "description": "A comprehensive collection of Zoom Meeting SDK implementations for web applications",
+  "main": "index.js",
+  "scripts": {
+    "start:cdn": "cd cdn && echo 'Open cdn/index.html in your browser'",
+    "start:local": "cd local && npm start",
+    "start:components": "cd components && npm start",
+    "install:all": "cd cdn && npm install && cd ../local && npm install && cd ../components && npm install",
+    "build:local": "cd local && npm run build",
+    "build:components": "cd components && npm run build",
+    "lint:components": "cd components && npm run lint",
+    "test": "echo 'Run tests for each implementation separately'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ansh2099/Zoom-Meeting-Frontend.git"
+  },
+  "keywords": [
+    "zoom",
+    "meeting",
+    "sdk",
+    "web",
+    "react",
+    "typescript",
+    "cdn",
+    "frontend"
+  ],
+  "author": "Zoom Meeting Frontend Contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ansh2099/Zoom-Meeting-Frontend/issues"
+  },
+  "homepage": "https://github.com/Ansh2099/Zoom-Meeting-Frontend#readme",
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+} 
