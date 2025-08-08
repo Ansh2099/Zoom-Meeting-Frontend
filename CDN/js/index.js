@@ -30,17 +30,40 @@ function websdkready() {
     }
   }
 
+  // Hardcoded meeting details - you can modify these values
+  const HARDCODED_MEETING_DETAILS = {
+    meetingNumber: "8061256218",
+    password: "Ansh", // Replace with actual password
+    email: "anshpreetwork1009@gmail.com"
+  };
+
+  // Function to prompt user for display name
+  function promptForDisplayName() {
+    const defaultName = "Ansh"; // Default name if user cancels or enters empty
+    const name = prompt("Enter your display name for the meeting:", defaultName);
+    return name && name.trim() ? name.trim() : defaultName;
+  }
+
+  // Function to auto-fill form with hardcoded values
+  function autoFillMeetingDetails() {
+    const displayName = promptForDisplayName();
+    document.getElementById("display_name").value = displayName;
+    document.getElementById("meeting_number").value = HARDCODED_MEETING_DETAILS.meetingNumber;
+    document.getElementById("meeting_pwd").value = HARDCODED_MEETING_DETAILS.password;
+    document.getElementById("meeting_email").value = HARDCODED_MEETING_DETAILS.email;
+    
+    // Save to cookies for persistence
+    testTool.setCookie("meeting_number", HARDCODED_MEETING_DETAILS.meetingNumber);
+    testTool.setCookie("meeting_pwd", HARDCODED_MEETING_DETAILS.password);
+    testTool.setCookie("display_name", displayName);
+    testTool.setCookie("meeting_email", HARDCODED_MEETING_DETAILS.email);
+  }
+
+  // Note: Removed auto-fill on page load - form fields will appear empty
+  // The autoFillMeetingDetails() function is still available for button clicks
+
   // some help code, remember mn, pwd, lang to cookie, and autofill.
-  document.getElementById("display_name").value =
-    "CDN#" +
-    ZoomMtg.getWebSDKVersion()[0] +
-    testTool.detectOS() +
-    "#" +
-    testTool.getBrowserInfo();
-  document.getElementById("meeting_number").value =
-    testTool.getCookie("meeting_number");
-  document.getElementById("meeting_pwd").value =
-    testTool.getCookie("meeting_pwd");
+  // Note: We're overriding the default values with our hardcoded ones
   if (testTool.getCookie("meeting_lang"))
     document.getElementById("meeting_lang").value =
       testTool.getCookie("meeting_lang");
@@ -57,6 +80,7 @@ function websdkready() {
         document.getElementById("meeting_lang").value
       );
     });
+
   // copy zoom invite link to mn, autofill mn and pwd.
   document
     .getElementById("meeting_number")
@@ -79,22 +103,65 @@ function websdkready() {
 
   document.getElementById("clear_all").addEventListener("click", function (e) {
     testTool.deleteAllCookies();
+    // Clear all form fields
     document.getElementById("display_name").value = "";
     document.getElementById("meeting_number").value = "";
     document.getElementById("meeting_pwd").value = "";
+    document.getElementById("meeting_email").value = "";
     document.getElementById("meeting_lang").value = "en-US";
     document.getElementById("meeting_role").value = 0;
     window.location.href = "/index.html";
   });
 
-  // click join meeting button
+  // NEW: Join Now button - Auto-fills and immediately joins the meeting
+  document
+    .getElementById("join_now")
+    .addEventListener("click", async function (e) {
+      e.preventDefault();
+      
+      // Auto-fill with hardcoded values first
+      autoFillMeetingDetails();
+      
+      const meetingConfig = testTool.getMeetingConfig();
+      if (!meetingConfig.mn || !meetingConfig.name) {
+        showToast("Meeting number or username is empty", 3000);
+        return false;
+      }
+
+      // Show loading message
+      showToast("Joining meeting...", 2000);
+
+      testTool.setCookie("meeting_number", meetingConfig.mn);
+      testTool.setCookie("meeting_pwd", meetingConfig.pwd);
+
+      try {
+        const signature = await getSignature(
+          meetingConfig.mn,
+          meetingConfig.role
+        );
+        console.log(signature);
+        meetingConfig.signature = signature;
+        const joinUrl = "/meeting.html?" + testTool.serialize(meetingConfig);
+        console.log(joinUrl);
+        
+        // Automatically open the meeting
+        window.open(joinUrl, "_blank");
+        showToast("Meeting opened in new tab!", 3000);
+
+      } catch (error) {
+        console.error("Failed to get signature", error);
+        showToast("Failed to get signature. Please check your server.", 5000);
+      }
+    });
+
+  // click join meeting button (original functionality)
   document
     .getElementById("join_meeting")
     .addEventListener("click", async function (e) {
       e.preventDefault();
       const meetingConfig = testTool.getMeetingConfig();
       if (!meetingConfig.mn || !meetingConfig.name) {
-        alert("Meeting number or username is empty");
+        showToast("Meeting number or username is empty", 3000);
         return false;
       }
 
@@ -117,7 +184,7 @@ function websdkready() {
         // Add your code to join the meeting here
       } catch (error) {
         console.error("Failed to get signature", error);
-        alert("Failed to get signature");
+        showToast("Failed to get signature", 3000);
       }
     });
 
@@ -133,11 +200,53 @@ function websdkready() {
     document.body.removeChild(aux);
   }
 
-  // click copy jon link button
+  // NEW: Copy Join Link button with improved functionality
+  document
+    .getElementById("copy_join_link")
+    .addEventListener("click", async function (e) {
+      e.preventDefault();
+      
+      // Auto-fill with hardcoded values first
+      autoFillMeetingDetails();
+      
+      const meetingConfig = testTool.getMeetingConfig();
+      if (!meetingConfig.mn || !meetingConfig.name) {
+        showToast("Meeting number or username is empty", 3000);
+        return false;
+      }
+
+      try {
+        const signature = await getSignature(meetingConfig.mn, meetingConfig.role);
+        console.log(signature);
+        meetingConfig.signature = signature;
+
+        var joinUrl =
+          testTool.getCurrentDomain() +
+          "/meeting.html?" +
+          testTool.serialize(meetingConfig);
+        
+        // Use modern clipboard API if available
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(joinUrl);
+          showToast("Join link copied to clipboard!", 3000);
+        } else {
+          // Fallback for older browsers
+          document.getElementById("copy_link_value").setAttribute("link", joinUrl);
+          copyToClipboard("copy_link_value");
+          showToast("Join link copied to clipboard!", 3000);
+        }
+        
+      } catch (error) {
+        console.error("Failed to copy link", error);
+        showToast("Failed to copy link. Please try again.", 3000);
+      }
+    });
+
+  // click copy jon link button (original functionality - keeping for compatibility)
   window.copyJoinLink = async function (element) {
     const meetingConfig = testTool.getMeetingConfig();
     if (!meetingConfig.mn || !meetingConfig.name) {
-      alert("Meeting number or username is empty");
+      showToast("Meeting number or username is empty", 3000);
       return false;
     }
 

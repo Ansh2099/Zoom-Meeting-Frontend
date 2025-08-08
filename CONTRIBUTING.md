@@ -1,133 +1,349 @@
 
-# Contributor Covenant Code of Conduct
+# Contributing to Zoom Meeting Frontend
 
-## Our Pledge
+Thank you for your interest in contributing to the Zoom Meeting Frontend project! This document provides guidelines and information for contributors.
 
-We as members, contributors, and leaders pledge to make participation in our
-community a harassment-free experience for everyone, regardless of age, body
-size, visible or invisible disability, ethnicity, sex characteristics, gender
-identity and expression, level of experience, education, socio-economic status,
-nationality, personal appearance, race, caste, color, religion, or sexual identity
-and orientation.
+## 🤝 How to Contribute
 
-We pledge to act and interact in ways that contribute to an open, welcoming,
-diverse, inclusive, and healthy community.
+### 1. Fork and Clone
 
-## Our Standards
+1. Fork the repository to your GitHub account
+2. Clone your fork locally:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/Zoom-Meeting-Frontend.git
+   cd Zoom-Meeting-Frontend
+   ```
 
-Examples of behavior that contributes to a positive environment for our
-community include:
+### 2. Set Up Development Environment
 
-* Demonstrating empathy and kindness toward other people
-* Being respectful of differing opinions, viewpoints, and experiences
-* Giving and gracefully accepting constructive feedback
-* Accepting responsibility and apologizing to those affected by our mistakes,
-  and learning from the experience
-* Focusing on what is best not just for us as individuals, but for the
-  overall community
+#### Prerequisites
+- Node.js 16+ 
+- npm or yarn
+- Git
 
-Examples of unacceptable behavior include:
+#### Installation
+```bash
+# Install dependencies for all implementations
+cd cdn && npm install
+cd ../local && npm install  
+cd ../components && npm install
+```
 
-* The use of sexualized language or imagery, and sexual attention or
-  advances of any kind
-* Trolling, insulting or derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or email
-  address, without their explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
+### 3. Create a Feature Branch
 
-## Enforcement Responsibilities
+```bash
+git checkout -b feature/your-feature-name
+```
 
-Community leaders are responsible for clarifying and enforcing our standards of
-acceptable behavior and will take appropriate and fair corrective action in
-response to any behavior that they deem inappropriate, threatening, offensive,
-or harmful.
+### 4. Make Your Changes
 
-Community leaders have the right and responsibility to remove, edit, or reject
-comments, commits, code, wiki edits, issues, and other contributions that are
-not aligned to this Code of Conduct, and will communicate reasons for moderation
-decisions when appropriate.
+Follow the coding standards and guidelines below.
 
-## Scope
+### 5. Test Your Changes
 
-This Code of Conduct applies within all community spaces, and also applies when
-an individual is officially representing the community in public spaces.
-Examples of representing our community include using an official e-mail address,
-posting via an official social media account, or acting as an appointed
-representative at an online or offline event.
+```bash
+# Test CDN implementation
+cd cdn
+# Open index.html in browser
 
-## Enforcement
+# Test Local implementation
+cd ../local
+npm start
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-[INSERT CONTACT METHOD].
-All complaints will be reviewed and investigated promptly and fairly.
+# Test Components implementation
+cd ../components
+npm start
+```
 
-All community leaders are obligated to respect the privacy and security of the
-reporter of any incident.
+### 6. Commit Your Changes
 
-## Enforcement Guidelines
+Use conventional commit messages:
 
-Community leaders will follow these Community Impact Guidelines in determining
-the consequences for any action they deem in violation of this Code of Conduct:
+```bash
+git commit -m "feat: add new meeting controls"
+git commit -m "fix: resolve authentication issue"
+git commit -m "docs: update README with new features"
+```
 
-### 1. Correction
+### 7. Push and Create Pull Request
 
-**Community Impact**: Use of inappropriate language or other behavior deemed
-unprofessional or unwelcome in the community.
+```bash
+git push origin feature/your-feature-name
+```
 
-**Consequence**: A private, written warning from community leaders, providing
-clarity around the nature of the violation and an explanation of why the
-behavior was inappropriate. A public apology may be requested.
+Then create a Pull Request on GitHub.
 
-### 2. Warning
+## 📋 Development Guidelines
 
-**Community Impact**: A violation through a single incident or series
-of actions.
+### Code Style
 
-**Consequence**: A warning with consequences for continued behavior. No
-interaction with the people involved, including unsolicited interaction with
-those enforcing the Code of Conduct, for a specified period of time. This
-includes avoiding interactions in community spaces as well as external channels
-like social media. Violating these terms may lead to a temporary or
-permanent ban.
+#### JavaScript/TypeScript
+- Use ES6+ features
+- Follow Airbnb JavaScript Style Guide
+- Use meaningful variable and function names
+- Add JSDoc comments for complex functions
 
-### 3. Temporary Ban
+```javascript
+/**
+ * Joins a Zoom meeting with the provided parameters
+ * @param {string} meetingNumber - The meeting number
+ * @param {string} password - The meeting password
+ * @param {number} role - The user role (0 for attendee, 1 for host)
+ * @param {string} signature - The authentication signature
+ * @returns {Promise<void>}
+ */
+async function joinMeeting(meetingNumber, password, role, signature) {
+  // Implementation
+}
+```
 
-**Community Impact**: A serious violation of community standards, including
-sustained inappropriate behavior.
+#### CSS/SCSS
+- Use BEM methodology for class naming
+- Follow mobile-first responsive design
+- Use CSS custom properties for theming
 
-**Consequence**: A temporary ban from any sort of interaction or public
-communication with the community for a specified period of time. No public or
-private interaction with the people involved, including unsolicited interaction
-with those enforcing the Code of Conduct, is allowed during this period.
-Violating these terms may lead to a permanent ban.
+```css
+.meeting-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-### 4. Permanent Ban
+.meeting-form__input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
 
-**Community Impact**: Demonstrating a pattern of violation of community
-standards, including sustained inappropriate behavior,  harassment of an
-individual, or aggression toward or disparagement of classes of individuals.
+.meeting-form__button {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+```
 
-**Consequence**: A permanent ban from any sort of public interaction within
-the community.
+#### React Components
+- Use functional components with hooks
+- Follow TypeScript best practices
+- Implement proper prop validation
 
-## Attribution
+```typescript
+interface MeetingFormProps {
+  onSubmit: (data: MeetingData) => void;
+  loading?: boolean;
+}
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage],
-version 2.0, available at
-[https://www.contributor-covenant.org/version/2/0/code_of_conduct.html][v2.0].
+const MeetingForm: React.FC<MeetingFormProps> = ({ onSubmit, loading = false }) => {
+  // Component implementation
+};
+```
 
-Community Impact Guidelines were inspired by 
-[Mozilla's code of conduct enforcement ladder][Mozilla CoC].
+### File Organization
 
-For answers to common questions about this code of conduct, see the FAQ at
-[https://www.contributor-covenant.org/faq][FAQ]. Translations are available 
-at [https://www.contributor-covenant.org/translations][translations].
+```
+project/
+├── cdn/                    # CDN implementation
+│   ├── index.html
+│   ├── js/
+│   └── package.json
+├── local/                  # Local implementation
+│   ├── index.html
+│   ├── js/
+│   └── package.json
+├── components/             # React/TypeScript implementation
+│   ├── src/
+│   ├── public/
+│   └── package.json
+└── docs/                   # Documentation
+    ├── cdn-guide.md
+    ├── local-guide.md
+    └── components-guide.md
+```
 
-[homepage]: https://www.contributor-covenant.org
-[v2.0]: https://www.contributor-covenant.org/version/2/0/code_of_conduct.html
-[Mozilla CoC]: https://github.com/mozilla/diversity
-[FAQ]: https://www.contributor-covenant.org/faq
-[translations]: https://www.contributor-covenant.org/translations
+### Testing
+
+#### Manual Testing
+- Test on different browsers (Chrome, Firefox, Safari, Edge)
+- Test on mobile devices
+- Test with different Zoom meeting scenarios
+
+#### Automated Testing
+```bash
+# Run linting
+npm run lint
+
+# Run TypeScript checks
+npm run type-check
+
+# Run build tests
+npm run build
+```
+
+### Documentation
+
+- Update README.md for new features
+- Add JSDoc comments for new functions
+- Update relevant guide files in `/docs`
+- Include screenshots for UI changes
+
+## 🐛 Bug Reports
+
+### Before Submitting a Bug Report
+
+1. Check existing issues
+2. Test on different browsers
+3. Verify with latest version
+4. Check browser console for errors
+
+### Bug Report Template
+
+```markdown
+**Bug Description**
+Brief description of the issue
+
+**Steps to Reproduce**
+1. Go to '...'
+2. Click on '...'
+3. See error
+
+**Expected Behavior**
+What should happen
+
+**Actual Behavior**
+What actually happens
+
+**Environment**
+- Browser: [e.g. Chrome 120]
+- OS: [e.g. Windows 11]
+- Implementation: [CDN/Local/Components]
+
+**Additional Information**
+Screenshots, console logs, etc.
+```
+
+## 💡 Feature Requests
+
+### Feature Request Template
+
+```markdown
+**Feature Description**
+Brief description of the feature
+
+**Use Case**
+Why this feature is needed
+
+**Proposed Implementation**
+How you suggest implementing it
+
+**Additional Information**
+Mockups, examples, etc.
+```
+
+## 🔧 Development Setup
+
+### Environment Variables
+
+Create `.env` files for each implementation:
+
+```bash
+# cdn/.env
+ZOOM_SDK_KEY=your_sdk_key
+ZOOM_SDK_SECRET=your_sdk_secret
+
+# local/.env
+REACT_APP_ZOOM_SDK_KEY=your_sdk_key
+REACT_APP_ZOOM_SDK_SECRET=your_sdk_secret
+
+# components/.env
+VITE_ZOOM_SDK_KEY=your_sdk_key
+VITE_ZOOM_SDK_SECRET=your_sdk_secret
+```
+
+### Authentication Backend
+
+Set up the authentication backend:
+
+```bash
+git clone https://github.com/zoom/meetingsdk-auth-endpoint-sample
+cd meetingsdk-auth-endpoint-sample
+cp .env.example .env
+# Edit .env with your credentials
+npm install && npm start
+```
+
+## 📝 Commit Message Guidelines
+
+Use conventional commit format:
+
+```
+type(scope): description
+
+[optional body]
+
+[optional footer]
+```
+
+### Types
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes
+- `refactor`: Code refactoring
+- `test`: Test changes
+- `chore`: Build/tool changes
+
+### Examples
+```bash
+git commit -m "feat(cdn): add dark theme support"
+git commit -m "fix(components): resolve TypeScript compilation error"
+git commit -m "docs: update installation instructions"
+```
+
+## 🚀 Release Process
+
+### Pre-release Checklist
+- [ ] All tests pass
+- [ ] Documentation is updated
+- [ ] Version numbers are updated
+- [ ] Changelog is updated
+- [ ] Builds are successful
+
+### Release Steps
+1. Update version in package.json files
+2. Update CHANGELOG.md
+3. Create release tag
+4. Push to main branch
+5. Create GitHub release
+
+## 🤝 Code Review Process
+
+### Review Checklist
+- [ ] Code follows style guidelines
+- [ ] Tests are included
+- [ ] Documentation is updated
+- [ ] No breaking changes (or properly documented)
+- [ ] Security considerations addressed
+
+### Review Guidelines
+- Be constructive and respectful
+- Focus on code quality and functionality
+- Suggest improvements when possible
+- Test the changes locally
+
+## 📞 Getting Help
+
+- **Issues**: Use GitHub Issues for bugs and feature requests
+- **Discussions**: Use GitHub Discussions for questions
+- **Documentation**: Check `/docs` folder for implementation guides
+
+## 📄 License
+
+By contributing to this project, you agree that your contributions will be licensed under the MIT License.
+
+---
+
+Thank you for contributing to Zoom Meeting Frontend! 🎉
